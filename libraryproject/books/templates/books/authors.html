@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Authors</title>
+</head>
+<body>
+<p>Si quieres añadir nuevos autores <a href="{% url 'books:add_authors' %}">pincha aquí</a></p>
+    {% if authors %}
+        <ul>
+        {% for author in authors %}
+            <li><a href="{% url 'books:authors_details' author.id %}">{{ author.first_name }} {{ author.last_name }}  
+            </a></li> {% endfor %}
+        </ul>
+    {% else %}
+        <p>No Authors are available.</p>
+    {% endif %}
+</body>
+</html>

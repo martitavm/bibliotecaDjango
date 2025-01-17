@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Añadir Authors</title>
+</head>
+<body>
+    <form method="post" action="{% url "books:add_author" %}">
+        {% csrf_token %}
+        <label for="first_name">Nombre:</label>
+        <input type="text" id="first_name" name="first_name" required>
+        <label for="last_name">Apellidos:</label>
+        <input type="text" id="last_name" name="last_name" required>
+        <label for="birth_date">Fecha de Nacimiento:</label>
+        <input type="date" id="birth_date" name="birth_date">
+        <input type="submit" value="Agregar" >
+    </form>
+</body>
+</html>
