@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 
-from books.models import Book, Author
+from books.models import Book, Author, Genre
 
 
 # Create your views here.
@@ -41,3 +41,54 @@ def add_author(request):
 
 def add_authors(request):
     return render(request, "books/add_authors.html")
+
+
+def genres(request):
+    genres = Genre.objects.all()
+    lista_genero_libros = []
+
+    for genre in genres:
+        numbooks = genre.books_genre.count()
+        lista_genero_libros.append((genre, numbooks))
+
+    context = {
+        'lista_genero_libros': lista_genero_libros,
+    }
+    return render(request, "books/genres.html", context)
+
+
+def genres_details(request, genre_id):
+    genre = get_object_or_404(Genre, pk=genre_id)
+    books_list = genre.books_genre.all()
+    context = {
+        'genre': genre,
+        'books_list': books_list
+    }
+    return render(request, "books/genres_details.html",context)
+
+def add_book(request):
+
+    authors_list = Author.objects.all()
+    genre_list = Genre.objects.all()
+
+    if request.method == "POST":
+
+        title = request.POST.get('title')
+        author_id = request.POST.get('author')
+        genre_id = request.POST.get('genre')
+        published_date = request.POST.get('published_date')
+        summary = request.POST.get('summary')
+
+        author = get_object_or_404(Author, pk=author_id)
+        genre = get_object_or_404(Genre, pk=genre_id)
+
+        book = Book.objects.create(title=title,genre=genre,publish_date=published_date,summary=summary)
+        book.author.add(author)
+        return HttpResponseRedirect(reverse("books:index"))
+
+    context = {
+        'authors_list': authors_list,
+        'genre_list': genre_list,
+    }
+    return render(request, "books/add_books.html", context)
+

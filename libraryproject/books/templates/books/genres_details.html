@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DetallesGenero</title>
+</head>
+<body>
+    <h1>Detalles de Género</h1>
+    <h2>Nombre</h2>
+        <h3>{{ genre.name }}</h3>
+    <h2>Libros</h2>
+    <ul>
+        {% for book in books_list %}
+    	    <li>{{ book.title }}</li>
+        {% endfor %}  
+    </ul>
+</body>
+</html>

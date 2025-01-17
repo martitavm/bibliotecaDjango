@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Genres</title>
+</head>
+<body>
+<h1>Genres</h1>
+    {% if lista_genero_libros %}
+        <ul>
+        {% for genre, numbooks in lista_genero_libros %}
+            <li>
+                <a href="{% url 'books:genres_details' genre.id %}">
+                    {{ genre.name }} ( {{ numbooks }} )
+                </a>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No genres are available.</p>
+    {% endif %}
+</body>
+</html>

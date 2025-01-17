@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Añadir Books</title>
+</head>
+<body>
+    <h1>Añadir un nuevo libro</h1>
+    <form method="post" action="{% url 'books:add_book' %}">
+        {% csrf_token %}
+
+        <label for="title">Título:</label>
+        <input type="text" id="title" name="title" required><br>
+
+        <h3>Autores:</h3>
+        {% if authors_list %}
+            <select name="author" id="author" required>
+                <option value="" disabled selected>Selecciona un autor</option>
+                {% for author in authors_list %}
+                    <option value="{{ author.id }}">{{ author.first_name }} {{ author.last_name }}</option>
+                {% endfor %}
+            </select>
+        {% else %}
+            <p>No hay autores disponibles.</p>
+        {% endif %}
+
+        <h3>Géneros:</h3>
+        {% if genre_list %}
+            <select name="genre" id="genre" required>
+                <option value="" disabled selected>Selecciona un género</option>
+                {% for genre in genre_list %}
+                    <option value="{{ genre.id }}">{{ genre.name }}</option>
+                {% endfor %}
+            </select>
+        {% else %}
+            <p>No hay géneros disponibles.</p>
+        {% endif %}
+    
+    <br>
+
+        <label for="published_date">Fecha de publicación:</label>
+        <input type="date" id="published_date" name="published_date" required><br>
+    <br>
+        <label for="summary">Resumen:</label>
+        <textarea name="summary" id="summary" required></textarea><br>
+
+        <input type="submit" value="Agregar">
+    </form>
+</body>
+</html>
