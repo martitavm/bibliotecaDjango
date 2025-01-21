@@ -8,6 +8,7 @@
     <h1>Books</h1>
     {% if books_list %}
         <ul>
+        <p>Si quieres añadir un libro <a href="{% url 'books:add_book' %}">pincha aquí</a></p>
         {% for book in books_list %}
             <li><a href="{% url 'books:details' book.id %}">{{ book.title }}:
                 {% for author in book.author.all %}
@@ -15,6 +16,9 @@
                 {% endfor %}
             </a></li> {% endfor %}
         </ul>
+        <button><a href="{% url 'books:recent_books' %}">Lista de libros publicados recientes</a></button>
+        <button><a href="{% url 'books:authors' %}">Lista de autores</a></button>
+         <button><a href="{% url 'books:genres' %}">Lista de géneros</a></button>
     {% else %}
         <p>No books are available.</p>
     {% endif %}

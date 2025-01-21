@@ -1,5 +1,5 @@
 from django.urls import reverse
-
+from datetime import date
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 
@@ -38,10 +38,7 @@ def add_author(request):
         birth_date = request.POST['birth_date']
         Author.objects.create(first_name=first_name, last_name=last_name, birth_date=birth_date)
         return HttpResponseRedirect(reverse("books:authors"))
-
-def add_authors(request):
     return render(request, "books/add_authors.html")
-
 
 def genres(request):
     genres = Genre.objects.all()
@@ -92,3 +89,14 @@ def add_book(request):
     }
     return render(request, "books/add_books.html", context)
 
+def recent_books(request):
+    hoy = date.today()
+    hace_5_años = date(hoy.year - 5, hoy.month, hoy.day)
+
+    # Filtra los libros publicados después de esa fecha
+    recent_books_list = Book.objects.filter(publish_date__gte=hace_5_años)
+
+    context = {
+        'recent_books_list': recent_books_list,
+    }
+    return render(request, "books/recent_books.html", context)

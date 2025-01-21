@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Libros recientes</title>
+</head>
+<body>
+    <h1>Libros publicados en los últimos 5 años</h1>
+    {% if recent_books_list %}
+        <ul>
+            {% for book in recent_books_list %}
+                <li>
+                    <strong>{{ book.title }}</strong> - Publicado el {{ book.publish_date }}<br>
+                    Autor(es):
+                    {% for author in book.author.all %}
+                        {{ author.first_name }} {{ author.last_name }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}<br>
+                    Género: {{ book.genre.name }}<br>
+                    Resumen: {{ book.summary }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No hay libros publicados en los últimos 5 años.</p>
+    {% endif %}
+</body>
+</html>
