@@ -19,6 +19,8 @@
         <button><a href="{% url 'books:recent_books' %}">Lista de libros publicados recientes</a></button>
         <button><a href="{% url 'books:authors' %}">Lista de autores</a></button>
          <button><a href="{% url 'books:genres' %}">Lista de géneros</a></button>
+        <br> <br>
+        <button><a href="{% url 'books:logout' %}">Log out</a></button>
     {% else %}
         <p>No books are available.</p>
     {% endif %}

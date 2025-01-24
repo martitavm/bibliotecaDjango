@@ -1,13 +1,15 @@
+from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from datetime import date
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
-
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from books.models import Book, Author, Genre
-
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
-
+@login_required
 def index(request):
     books_list = Book.objects.all()
     context = {
@@ -100,3 +102,38 @@ def recent_books(request):
         'recent_books_list': recent_books_list,
     }
     return render(request, "books/recent_books.html", context)
+
+
+def login_view(request):
+    if request.method == "POST":
+        username = request.POST["username"]
+        password = request.POST["password"]
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return HttpResponseRedirect(reverse("books:index"))
+    return render(request, "books/login_view.html")
+
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect(reverse("books:login_view"))
+
+def create_user(request):
+    if request.method == "POST":
+        username = request.POST["username"]
+        email = request.POST["email"]
+        password = request.POST["password"]
+        password_repeat = request.POST["password_repeat"]
+
+        if password == password_repeat:
+            user = User.objects.create_user(username, email, password)
+            user.save()
+            return HttpResponseRedirect(reverse("books:login_view"))
+        else:
+            error = True
+            context = {
+                'error': error
+            }
+            return render(request, "books/create_user.html", context)
+
+    return render(request, "books/create_user.html")
