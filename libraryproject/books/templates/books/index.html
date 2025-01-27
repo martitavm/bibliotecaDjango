@@ -20,7 +20,10 @@
         <button><a href="{% url 'books:authors' %}">Lista de autores</a></button>
          <button><a href="{% url 'books:genres' %}">Lista de géneros</a></button>
         <br> <br>
-        <button><a href="{% url 'books:logout_view' %}">Log out</a></button>
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <input type="submit" value="Logout">
+        </form>
     {% else %}
         <p>No books are available.</p>
     {% endif %}
