@@ -17,10 +17,12 @@ def index(request):
     }
     return render(request, "books/index.html", context)
 
+@login_required
 def details(request, book_id):
     book = get_object_or_404(Book, pk=book_id)
     return render(request, "books/details.html", {'book': book})
 
+@login_required
 def authors(request):
     authors = Author.objects.all()
     context = {
@@ -28,11 +30,13 @@ def authors(request):
     }
     return render(request, "books/authors.html", context)
 
+@login_required
 def authors_details(request, author_id):
     author = get_object_or_404(Author, pk=author_id)
     books_list = author.books.all()
     return render(request, "books/authors_details.html", {'author': author, 'books_list': books_list})
 
+@login_required
 def add_author(request):
     if request.method == "POST":
         first_name = request.POST['first_name']
@@ -42,6 +46,7 @@ def add_author(request):
         return HttpResponseRedirect(reverse("books:authors"))
     return render(request, "books/add_authors.html")
 
+@login_required
 def genres(request):
     genres = Genre.objects.all()
     lista_genero_libros = []
@@ -56,6 +61,7 @@ def genres(request):
     return render(request, "books/genres.html", context)
 
 
+@login_required
 def genres_details(request, genre_id):
     genre = get_object_or_404(Genre, pk=genre_id)
     books_list = genre.books_genre.all()
@@ -65,6 +71,7 @@ def genres_details(request, genre_id):
     }
     return render(request, "books/genres_details.html",context)
 
+@login_required
 def add_book(request):
 
     authors_list = Author.objects.all()
@@ -91,6 +98,7 @@ def add_book(request):
     }
     return render(request, "books/add_books.html", context)
 
+@login_required
 def recent_books(request):
     hoy = date.today()
     hace_5_años = date(hoy.year - 5, hoy.month, hoy.day)
@@ -105,18 +113,18 @@ def recent_books(request):
 
 
 def login_view(request):
-    if request.method == "POST":
-        username = request.POST["username"]
-        password = request.POST["password"]
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return HttpResponseRedirect(reverse("books:index"))
-    return render(request, "books/login_view.html")
+   if request.method == "POST":
+       username = request.POST["username"]
+       password = request.POST["password"]
+       user = authenticate(request, username=username, password=password)
+       if user is not None:
+           login(request, user)
+           return HttpResponseRedirect(reverse("books:index"))
+   return render(request, "books/login_view.html")
 
 def logout_view(request):
-    logout(request)
-    return HttpResponseRedirect(reverse("books:login_view"))
+   logout(request)
+   return HttpResponseRedirect(reverse("books:login_view"))
 
 def create_user(request):
     if request.method == "POST":
